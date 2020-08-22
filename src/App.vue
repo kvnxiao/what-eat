@@ -29,7 +29,7 @@
 
 <style lang="sass">
 // $primary: #ff7c03
-// $danger: #d32323
+$danger: #d32323
 
 @import "~bulma/bulma"
 

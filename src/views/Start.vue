@@ -43,6 +43,7 @@ section.section
         .selection
           img(src="https://www.qsrmagazine.com/sites/default/files/styles/story_page/public/story/more-diet.jpg?itok=y9x4cqn-")
           span.title.is-size-3 Mediterranean
+    router-link.button.is-danger.is-large(to="/preferences") Next
 </template>
 
 <script lang="ts">
@@ -53,13 +54,16 @@ export default class Start extends Vue {}
 </script>
 
 <style lang="sass" scoped>
+.title
+  color: #ff7c03
+
 .selection
   position: relative
   display: flex
   justify-content: center
   width: 250px
   height: 250px
-  margin-bottom: 1rem
+  margin: 1rem auto
 
   img
     position: relative
