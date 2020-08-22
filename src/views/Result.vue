@@ -39,7 +39,11 @@ section.section
 import { Component, Vue } from "vue-property-decorator"
 
 @Component
-export default class Result extends Vue {}
+export default class Result extends Vue {
+  private mounted() {
+    // window.localStorage.getItem
+  }
+}
 </script>
 
 <style lang="sass" scoped>

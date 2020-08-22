@@ -64,11 +64,10 @@ export default class Start extends Vue {
   private selected(selection: string) {
     if (this.selections.has(selection)) {
       this.selections.delete(selection)
-      this.$forceUpdate()
     } else {
       this.selections.add(selection)
-      this.$forceUpdate()
     }
+    this.$forceUpdate()
     window.localStorage.setItem("selections", JSON.stringify([...this.selections]))
   }
 

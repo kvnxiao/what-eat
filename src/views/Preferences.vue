@@ -37,7 +37,7 @@ import { Component, Vue } from "vue-property-decorator"
   },
 })
 export default class Preferences extends Vue {
-  private price = 1
+  private prices: Set<number> = new Set()
   private occasion = ""
 
   private marks = {
@@ -51,7 +51,7 @@ export default class Preferences extends Vue {
 
   private mounted(): void {
     this.occasion = window.localStorage.getItem("occasion") ?? ""
-    this.price = parseInt(window.localStorage.getItem("price") ?? "1")
+    this.prices = new Set(JSON.parse(window.localStorage.getItem("price") ?? "[]"))
   }
 
   private setOccasion(occasion: string) {
@@ -64,12 +64,17 @@ export default class Preferences extends Vue {
   }
 
   private setPrice(p: number) {
-    this.price = p
-    window.localStorage.setItem("price", this.price.toString())
+    if (this.prices.has(p)) {
+      this.prices.delete(p)
+    } else {
+      this.prices.add(p)
+    }
+    this.$forceUpdate()
+    window.localStorage.setItem("price", JSON.stringify([...this.prices]))
   }
 
   private isPrice(p: number): boolean {
-    return this.price === p
+    return this.prices.has(p)
   }
 }
 </script>
