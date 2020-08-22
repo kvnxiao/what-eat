@@ -2,7 +2,7 @@
 section.section
   .container
     h1.title.is-size-1 You should visit...
-    template(v-if="result !== null && !geoError")
+    template(v-if="result !== null")
       .columns
         .column
           img.place(:src="result.image_url")
@@ -35,10 +35,12 @@ section.section
           .buttons
             router-link.button.is-light.is-medium(to="/start") Start over!
             button.button.is-danger.is-medium(@click="reroll") Re-roll
-    template(v-else)
+    template(v-else-if="result === null && !geoError")
       .loading
         h2.title Searching...
-    template(v-if="geoError")
+    template(v-else-if="geoError")
+      h2.title Oops...
+      h2.subtitle It seems like we can't find your location, please enter your location manually.
       .field.has-addons.manual-address
         .control
           input.input.is-medium(type="text", v-model="address", placeholder="Your current location address")
