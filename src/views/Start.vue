@@ -27,7 +27,7 @@ section.section
         button.selection(@click="selected('japanese')", :class="{ active: isActive('japanese') }")
           img(src="https://instagram.fyto1-1.fna.fbcdn.net/v/t51.2885-15/e35/66480171_211148053133981_1009633982700837960_n.jpg?_nc_ht=instagram.fyto1-1.fna.fbcdn.net&_nc_cat=105&_nc_ohc=KwuBbDiK-8YAX8LS7_-&oh=91872527b07901d7c332441ecda8326f&oe=5F6A9EE2")
           span.title.is-size-3 Japanese
-        button.selection(@click="selected('indian')", :class="{ active: isActive('indian') }")
+        button.selection(@click="selected('indpak')", :class="{ active: isActive('indpak') }")
           img(src="https://instagram.fyto1-2.fna.fbcdn.net/v/t51.2885-15/e35/117548418_1171603879886109_6184570646117416641_n.jpg?_nc_ht=instagram.fyto1-2.fna.fbcdn.net&_nc_cat=109&_nc_ohc=aEy2-12VjlQAX-ir6dU&oh=ce32cf0152915ec64802dddea7dd7515&oe=5F6BF66F")
           span.title.is-size-3 Indian
         button.selection(@click="selected('ethiopian')", :class="{ active: isActive('ethiopian') }")

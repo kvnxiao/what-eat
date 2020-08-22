@@ -2,38 +2,42 @@
 section.section
   .container
     h1.title.is-size-1 You should visit...
-    .columns(v-if="result !== null")
-      .column
-        img.place(:src="result.image_url")
-      .column.info
-        .columns
-          .column
-            p.subtitle.name {{ result.name }}
-            p.subtitle.price {{ result.price }}
-            p.subtitle.rating {{ result.rating }} / 5
-          .column.center
-            a.button.is-medium.is-danger(:href="directions", target="_blank") Get Directions
-            p.subtitle.distance {{ Math.round(result.distance / 100) * 100 / 1000 }} km from you
-        hr
-        .bottom
+    template(v-if="result !== null")
+      .columns
+        .column
+          img.place(:src="result.image_url")
+        .column.info
           .columns
             .column
-              p.subtitle.type Type of food: 
-                span {{ result.categories.map(it => it.title).join(",") }}
-              p.subtitle.phone Phone: 
-                span {{ result.display_phone }}
-              p.subtitle.open Open until: 
-                span N/A
-              p.subtitle.takeout Takeout: 
-                span Available
-              p.subtitle.occasions Occasions: 
-                span Date night, family dinner, special occasions
+              p.subtitle.name {{ result.name }}
+              p.subtitle.price {{ result.price }}
+              p.subtitle.rating {{ result.rating }} / 5 ({{ result.review_count }} reviews)
             .column.center
-              button.button.is-medium.is-danger Check in
-        hr
-        .buttons
-          router-link.button.is-light.is-medium(to="/start") Start over!
-          button.button.is-danger.is-medium(@click="reroll") Re-roll
+              a.button.is-medium.is-danger(:href="directions", target="_blank") Get Directions
+              p.subtitle.distance {{ Math.round(result.distance / 100) * 100 / 1000 }} km from you
+          hr
+          .bottom
+            .columns
+              .column
+                p.subtitle.type Type of food: 
+                  span {{ result.categories.map(it => it.title).join(", ") }}
+                p.subtitle.phone Phone: 
+                  span {{ result.display_phone }}
+                //- p.subtitle.open Open until: 
+                //-   span N/A
+                //- p.subtitle.takeout Takeout: 
+                //-   span {{ hasTakeout() }}
+                p.subtitle.occasions Occasions: 
+                  span Date night, family dinner, special occasions
+              .column.center
+                button.button.is-medium.is-danger Check in
+          hr
+          .buttons
+            router-link.button.is-light.is-medium(to="/start") Start over!
+            button.button.is-danger.is-medium(@click="reroll") Re-roll
+    template(v-else)
+      .loading
+        h2.title Searching...
 </template>
 
 <script lang="ts">
@@ -68,10 +72,7 @@ interface FoodResult {
   price: string
   rating: number
   review_count: number
-}
-
-function getRandomInt(max: number): number {
-  return Math.floor(Math.random() * Math.floor(max))
+  transactions: string[]
 }
 
 /**
@@ -111,6 +112,7 @@ export default class Result extends Vue {
         this.distance = parseFloat(window.localStorage.getItem("distance") ?? "10")
 
         axios.get(this.makeURL()).then(s => {
+          console.log(s.data)
           const results = s.data as YelpResult
           this.results = results.businesses
           shuffle(this.results)
@@ -157,6 +159,14 @@ export default class Result extends Vue {
     }&longitude=${this.coordinates.longitude}&radius=${this.getRadius()}&price=${this.getPrice()}`
   }
 
+  private hasTakeout(): string {
+    if (this.result && this.result.transactions.includes("pickup")) {
+      return "Available"
+    } else {
+      return "Not available"
+    }
+  }
+
   private reroll() {
     this.setRandomResult()
   }
@@ -164,6 +174,9 @@ export default class Result extends Vue {
 </script>
 
 <style lang="sass" scoped>
+.buttons
+  justify-content: center
+
 p.subtitle.name, .bottom p.subtitle
   font-weight: 600
 
@@ -186,4 +199,8 @@ h1.title, .price, .rating
 
 .column.center
   text-align: center
+
+.loading
+  h2.title
+    margin-top: 5rem
 </style>
