@@ -79,6 +79,7 @@ export default class Start extends Vue {
 
 <style lang="sass" scoped>
 button.selection
+  transition: opacity 0.15s ease-out
   padding: 0
   border: none
   opacity: 0.5
