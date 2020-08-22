@@ -2,28 +2,28 @@
 section.section
   .container
     h1.title.is-size-1 You should visit...
-    .columns
+    .columns(v-if="result !== null")
       .column
-        img.place(src="https://instagram.fyto1-2.fna.fbcdn.net/v/t51.2885-15/e35/p1080x1080/104761737_3968140833256818_2993283752768256929_n.jpg?_nc_ht=instagram.fyto1-2.fna.fbcdn.net&_nc_cat=106&_nc_ohc=0AqJvvWMzTIAX8lzeij&oh=5e1297b4357645a876e8531ee748e558&oe=5F69BF31")
+        img.place(:src="result.image_url")
       .column.info
         .columns
           .column
-            p.subtitle.name Richmond Station
-            p.subtitle.price $$$
-            p.subtitle.rating 3.5/5
+            p.subtitle.name {{ result.name }}
+            p.subtitle.price {{ result.price }}
+            p.subtitle.rating {{ result.rating }} / 5
           .column.center
-            button.button.is-medium.is-danger Get Directions
-            p.subtitle.distance 2.7 km from you
+            a.button.is-medium.is-danger(:href="directions", target="_blank") Get Directions
+            p.subtitle.distance {{ Math.round(result.distance / 100) * 100 / 1000 }} km from you
         hr
         .bottom
           .columns
             .column
               p.subtitle.type Type of food: 
-                span Canadian
+                span {{ result.categories.map(it => it.title).join(",") }}
               p.subtitle.phone Phone: 
-                span 647-123-4567
+                span {{ result.display_phone }}
               p.subtitle.open Open until: 
-                span 9pm
+                span N/A
               p.subtitle.takeout Takeout: 
                 span Available
               p.subtitle.occasions Occasions: 
@@ -32,16 +32,132 @@ section.section
               button.button.is-medium.is-danger Check in
         hr
         .reroll
-          button.button.is-danger.is-medium Re-roll
+          button.button.is-danger.is-medium(@click="reroll") Re-roll
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
+import axios from "axios"
+
+interface YelpResult {
+  businesses: FoodResult[]
+}
+
+interface Category {
+  alias: string
+  title: string
+}
+
+interface Location {
+  address1: string
+  display_address: string[]
+}
+
+interface FoodResult {
+  name: string
+  image_url: string
+  categories: Category[]
+  coordinates: {
+    latitude: number
+    longitude: number
+  }
+  display_phone: string
+  distance: number
+  location: Location
+  price: string
+  rating: number
+  review_count: number
+}
+
+function getRandomInt(max: number): number {
+  return Math.floor(Math.random() * Math.floor(max))
+}
+
+/**
+ * Shuffles array in place.
+ * @param {Array} a items An array containing the items.
+ */
+function shuffle(a: Array<unknown>): Array<unknown> {
+  var j, x, i
+  for (i = a.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1))
+    x = a[i]
+    a[i] = a[j]
+    a[j] = x
+  }
+  return a
+}
 
 @Component
 export default class Result extends Vue {
+  private coordinates!: Coordinates
+  private distance!: number
+  private selections!: string[]
+  private occasion!: string
+  private price!: number[]
+
+  private results: FoodResult[] = []
+  private result: FoodResult | null = null
+
   private mounted() {
-    // window.localStorage.getItem
+    navigator.geolocation.getCurrentPosition(
+      success => {
+        this.coordinates = success.coords
+        this.selections = JSON.parse(window.localStorage.getItem("selections") ?? "[]")
+        this.occasion = window.localStorage.getItem("occasion") ?? ""
+        this.price = JSON.parse(window.localStorage.getItem("price") ?? "[]")
+        this.price.sort()
+        this.distance = parseFloat(window.localStorage.getItem("distance") ?? "10")
+
+        axios.get(this.makeURL()).then(s => {
+          const results = s.data as YelpResult
+          this.results = results.businesses
+          shuffle(this.results)
+          this.setRandomResult()
+        })
+      },
+      err => {
+        console.log(err)
+      },
+    )
+  }
+
+  private get directions(): string {
+    if (this.result) {
+      return `https://google.com/maps/place/${encodeURI(this.result.location.address1)}`
+    }
+    return ""
+  }
+
+  private setRandomResult() {
+    const head = this.results.pop()
+    if (head) {
+      this.result = head
+    } else {
+      console.log("No more results!")
+    }
+  }
+
+  private getCategories(): string {
+    return this.selections.join(",")
+  }
+
+  private getRadius(): string {
+    return (this.distance * 1000).toString()
+  }
+
+  private getPrice(): string {
+    return this.price.map(num => num.toString()).join(",")
+  }
+
+  private makeURL(): string {
+    return `https://harryhuang.api.stdlib.com/what-eat@dev/search/?term=food&categories=${this.getCategories()}&latitude=${
+      this.coordinates.latitude
+    }&longitude=${this.coordinates.longitude}&radius=${this.getRadius()}&price=${this.getPrice()}`
+  }
+
+  private reroll() {
+    this.setRandomResult()
   }
 }
 </script>

@@ -21,7 +21,7 @@ section.section
         button.button(@click="setPrice(4)", :class="{ active: isPrice(4) }") $$$$
     h2.title Distance
     .slider
-      vue-slider(v-model="value", :marks="marks", :min="0", :max="10", :lazy="true", :interval="0.5")
+      vue-slider(v-model="distance", :marks="marks", :min="0", :max="10", :lazy="true", :interval="0.5", @change="changeDistance")
     .buttons
       router-link.button.is-light.is-large(to="/start") Back
       router-link.button.is-danger.is-large(to="/roll") Next
@@ -47,11 +47,12 @@ export default class Preferences extends Vue {
     "7.5": "< 7.5 km",
     "10": "< 10 km",
   }
-  private value = 0.5
+  private distance = 0.5
 
   private mounted(): void {
     this.occasion = window.localStorage.getItem("occasion") ?? ""
     this.prices = new Set(JSON.parse(window.localStorage.getItem("price") ?? "[]"))
+    this.distance = parseFloat(window.localStorage.getItem("distance") ?? "0.5")
   }
 
   private setOccasion(occasion: string) {
@@ -61,6 +62,10 @@ export default class Preferences extends Vue {
 
   private isOccasion(occasion: string) {
     return this.occasion === occasion
+  }
+
+  private changeDistance(value: number, index: number): void {
+    window.localStorage.setItem("distance", value.toString())
   }
 
   private setPrice(p: number) {
