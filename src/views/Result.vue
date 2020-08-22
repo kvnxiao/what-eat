@@ -31,7 +31,8 @@ section.section
             .column.center
               button.button.is-medium.is-danger Check in
         hr
-        .reroll
+        .buttons
+          router-link.button.is-light.is-medium(to="/start") Start over!
           button.button.is-danger.is-medium(@click="reroll") Re-roll
 </template>
 
@@ -184,8 +185,5 @@ h1.title, .price, .rating
   color: #ff7c03
 
 .column.center
-  text-align: center
-
-.reroll
   text-align: center
 </style>
