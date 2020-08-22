@@ -31,6 +31,9 @@
 // $primary: #ff7c03
 $danger: #d32323
 
+$themeColor: #ff7c03
+@import '~vue-slider-component/lib/theme/default.scss'
+
 @import "~bulma/bulma"
 
 @import url("https://fonts.googleapis.com/css2?family=Nunito&family=Nunito+Sans&display=swap")
