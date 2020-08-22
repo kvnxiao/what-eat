@@ -21,7 +21,7 @@ section.section
         button.button $$$$
     h2.title Distance
     .slider
-      vue-slider(v-model="value", :marks="marks", min="0", max="10", :lazy="true", :interval="0.5")
+      vue-slider(v-model="value", :marks="marks", :min="0", :max="10", :lazy="true", :interval="0.5")
     .buttons
       router-link.button.is-light.is-large(to="/start") Back
       router-link.button.is-danger.is-large(to="/roll") Next
