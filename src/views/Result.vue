@@ -2,7 +2,7 @@
 section.section
   .container
     h1.title.is-size-1 You should visit...
-    template(v-if="result !== null")
+    template(v-if="result !== null && !geoError")
       .columns
         .column
           img.place(:src="result.image_url")
@@ -38,6 +38,12 @@ section.section
     template(v-else)
       .loading
         h2.title Searching...
+    template(v-if="geoError")
+      .field.has-addons.manual-address
+        .control
+          input.input.is-medium(type="text", v-model="address", placeholder="Your current location address")
+        .control
+          button.button.is-danger.is-medium(@click="manualAddress()") Search
 </template>
 
 <script lang="ts">
@@ -102,15 +108,19 @@ export default class Result extends Vue {
   private results: FoodResult[] = []
   private result: FoodResult | null = null
 
+  private geoError = false
+  private address = ""
+
   private mounted() {
+    this.selections = JSON.parse(window.localStorage.getItem("selections") ?? "[]")
+    this.occasion = window.localStorage.getItem("occasion") ?? ""
+    this.price = JSON.parse(window.localStorage.getItem("price") ?? "[]")
+    this.price.sort()
+    this.distance = parseFloat(window.localStorage.getItem("distance") ?? "10")
+
     navigator.geolocation.getCurrentPosition(
       success => {
         this.coordinates = success.coords
-        this.selections = JSON.parse(window.localStorage.getItem("selections") ?? "[]")
-        this.occasion = window.localStorage.getItem("occasion") ?? ""
-        this.price = JSON.parse(window.localStorage.getItem("price") ?? "[]")
-        this.price.sort()
-        this.distance = parseFloat(window.localStorage.getItem("distance") ?? "10")
 
         axios.get(this.makeURL()).then(s => {
           console.log(s.data)
@@ -121,7 +131,7 @@ export default class Result extends Vue {
         })
       },
       err => {
-        console.log(err)
+        this.geoError = true
       },
     )
   }
@@ -160,6 +170,21 @@ export default class Result extends Vue {
     return `https://harryhuang.api.stdlib.com/what-eat@dev/search/?term=food&categories=${this.getCategories()}&latitude=${
       this.coordinates.latitude
     }&longitude=${this.coordinates.longitude}&radius=${this.getRadius()}&price=${this.getPrice()}`
+  }
+
+  private manualAddress() {
+    const address = this.address
+    const url = `https://harryhuang.api.stdlib.com/what-eat@dev/search/?term=food&categories=${this.getCategories()}&location=${encodeURIComponent(
+      address,
+    )}&radius=${this.getRadius()}&price=${this.getPrice()}`
+
+    axios.get(url).then(s => {
+      console.log(s.data)
+      const results = s.data as YelpResult
+      this.results = results.businesses
+      shuffle(this.results)
+      this.setRandomResult()
+    })
   }
 
   private hasTakeout(): string {
@@ -206,4 +231,9 @@ h1.title, .price, .rating
 .loading
   h2.title
     margin-top: 5rem
+
+.manual-address
+  justify-content: center
+  input.input
+    width: 24rem
 </style>
