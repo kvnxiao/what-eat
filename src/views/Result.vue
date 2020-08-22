@@ -59,6 +59,7 @@ interface Location {
 }
 
 interface FoodResult {
+  id: string
   name: string
   image_url: string
   categories: Category[]
@@ -127,7 +128,9 @@ export default class Result extends Vue {
 
   private get directions(): string {
     if (this.result) {
-      return `https://google.com/maps/place/${encodeURI(this.result.location.address1)}`
+      return `https://google.com/maps/place/${encodeURIComponent(
+        this.result.location.display_address.join(", "),
+      )}`
     }
     return ""
   }
