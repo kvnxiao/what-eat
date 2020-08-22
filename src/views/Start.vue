@@ -53,6 +53,14 @@ import { Component, Vue } from "vue-property-decorator"
 export default class Start extends Vue {
   private selections: Set<string> = new Set()
 
+  public mounted(): void {
+    const arr = window.localStorage.getItem("selections")
+    if (arr) {
+      this.selections = new Set(JSON.parse(arr))
+      this.$forceUpdate()
+    }
+  }
+
   private selected(selection: string) {
     if (this.selections.has(selection)) {
       this.selections.delete(selection)
@@ -61,7 +69,7 @@ export default class Start extends Vue {
       this.selections.add(selection)
       this.$forceUpdate()
     }
-    console.log(this.selections)
+    window.localStorage.setItem("selections", JSON.stringify([...this.selections]))
   }
 
   private isActive(selection: string): boolean {
@@ -87,13 +95,13 @@ button.selection.active
   display: flex
   justify-content: center
   width: 250px
-  height: 250px
+  height: 200px
   margin: 1rem auto
 
   img
     position: relative
     width: 250px
-    height: 250px
+    height: 200px
 
   span.title
     pointer-events: none

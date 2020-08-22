@@ -28,7 +28,7 @@
 </template>
 
 <style lang="sass">
-// $primary: #ff7c03
+$primary: #ff7c03
 $danger: #d32323
 
 $themeColor: #ff7c03
