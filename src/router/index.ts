@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from "vue-router"
 import Home from "../views/Home.vue"
 import Start from "../views/Start.vue"
 import Preferences from "../views/Preferences.vue"
+import Result from "../views/Result.vue"
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes: Array<RouteConfig> = [
     path: "/preferences",
     name: "Preferences",
     component: Preferences,
+  },
+  {
+    path: "/roll",
+    name: "Result",
+    component: Result,
   },
 ]
 
