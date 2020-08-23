@@ -28,7 +28,7 @@ section.section
                 //- p.subtitle.takeout Takeout: 
                 //-   span {{ hasTakeout() }}
                 p.subtitle.occasions Occasions: 
-                  span Date night, family dinner, special occasions
+                  span {{ occasion }}
               .column.center
                 button.button.is-medium.is-danger Check in
           hr
