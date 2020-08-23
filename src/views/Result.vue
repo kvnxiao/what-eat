@@ -115,17 +115,16 @@ export default class Result extends Vue {
 
   private mounted() {
     this.selections = JSON.parse(window.localStorage.getItem("selections") ?? "[]")
-    this.occasion = window.localStorage.getItem("occasion") ?? ""
-    this.price = JSON.parse(window.localStorage.getItem("price") ?? "[]")
+    this.occasion = window.localStorage.getItem("occasion") ?? "quick"
+    this.price = JSON.parse(window.localStorage.getItem("price") ?? "[1, 2]")
     this.price.sort()
-    this.distance = parseFloat(window.localStorage.getItem("distance") ?? "10")
+    this.distance = parseFloat(window.localStorage.getItem("distance") ?? "2.5")
 
     navigator.geolocation.getCurrentPosition(
       success => {
         this.coordinates = success.coords
 
         axios.get(this.makeURL()).then(s => {
-          console.log(s.data)
           const results = s.data as YelpResult
           this.results = results.businesses
           shuffle(this.results)
@@ -181,7 +180,6 @@ export default class Result extends Vue {
     )}&radius=${this.getRadius()}&price=${this.getPrice()}`
 
     axios.get(url).then(s => {
-      console.log(s.data)
       const results = s.data as YelpResult
       this.results = results.businesses
       shuffle(this.results)

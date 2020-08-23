@@ -24,7 +24,7 @@ section.section
       vue-slider(v-model="distance", :marks="marks", :min="0", :max="10", :lazy="true", :interval="0.5", @change="changeDistance")
     .buttons
       router-link.button.is-light.is-large(to="/start") Back
-      router-link.button.is-danger.is-large(to="/roll") Next
+      router-link.button.is-danger.is-large(to="/roll") Finish
 </template>
 
 <script lang="ts">
@@ -37,8 +37,8 @@ import { Component, Vue } from "vue-property-decorator"
   },
 })
 export default class Preferences extends Vue {
-  private prices: Set<number> = new Set()
-  private occasion = ""
+  private prices: Set<number> = new Set([1, 2])
+  private occasion = "quick"
 
   private marks = {
     "0": "",
@@ -47,12 +47,12 @@ export default class Preferences extends Vue {
     "7.5": "< 7.5 km",
     "10": "< 10 km",
   }
-  private distance = 0.5
+  private distance = 2.5
 
   private mounted(): void {
-    this.occasion = window.localStorage.getItem("occasion") ?? ""
-    this.prices = new Set(JSON.parse(window.localStorage.getItem("price") ?? "[]"))
-    this.distance = parseFloat(window.localStorage.getItem("distance") ?? "0.5")
+    this.occasion = window.localStorage.getItem("occasion") ?? "quick"
+    this.prices = new Set(JSON.parse(window.localStorage.getItem("price") ?? "[1, 2]"))
+    this.distance = parseFloat(window.localStorage.getItem("distance") ?? "2.5")
   }
 
   private setOccasion(occasion: string) {
