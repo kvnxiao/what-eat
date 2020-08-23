@@ -30,7 +30,7 @@ section.section
                 p.subtitle.occasions Occasions: 
                   span {{ occasion }}
               .column.center
-                button.button.is-medium.is-danger Check in
+                //- button.button.is-medium.is-danger Check in
           hr
       .buttons
         router-link.button.is-light.is-medium(to="/start") Start over!
