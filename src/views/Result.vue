@@ -37,7 +37,7 @@ section.section
         button.button.is-danger.is-medium(@click="reroll") Re-roll
     template(v-else-if="result === null && !geoError")
       .loading
-        h2.title Searching...
+        h2.title {{ searching }}
     template(v-else-if="geoError")
       h2.title Oops...
       h2.subtitle It seems like we can't find your location, please enter your location manually.
@@ -112,10 +112,19 @@ export default class Result extends Vue {
 
   private results: FoodResult[] = []
   private result: FoodResult | null = null
+  private doneSearching = false
 
   private geoError = false
   private noMore = false
   private address = ""
+
+  private get searching(): string {
+    if (this.doneSearching && this.results.length === 0) {
+      return "No results found. Try a different set of preferences!"
+    } else {
+      return "Searching..."
+    }
+  }
 
   private mounted() {
     this.selections = JSON.parse(window.localStorage.getItem("selections") ?? "[]")
@@ -129,6 +138,7 @@ export default class Result extends Vue {
         this.coordinates = success.coords
 
         axios.get(this.makeURL()).then(res => {
+          this.doneSearching = true
           const results = res.data as YelpResult
           this.results = results.businesses
           shuffle(this.results)
@@ -189,6 +199,7 @@ export default class Result extends Vue {
     )}&radius=${this.getRadius()}&price=${this.getPrice()}`
 
     axios.get(url).then(res => {
+      this.doneSearching = true
       const results = res.data as YelpResult
       this.results = results.businesses
       shuffle(this.results)
