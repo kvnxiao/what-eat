@@ -32,9 +32,9 @@ section.section
               .column.center
                 button.button.is-medium.is-danger Check in
           hr
-          .buttons
-            router-link.button.is-light.is-medium(to="/start") Start over!
-            button.button.is-danger.is-medium(@click="reroll") Re-roll
+      .buttons
+        router-link.button.is-light.is-medium(to="/start") Start over!
+        button.button.is-danger.is-medium(@click="reroll") Re-roll
     template(v-else-if="result === null && !geoError")
       .loading
         h2.title Searching...
