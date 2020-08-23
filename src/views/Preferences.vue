@@ -66,7 +66,7 @@ export default class Preferences extends Vue {
     return this.occasion === occasion
   }
 
-  private changeDistance(value: number, index: number): void {
+  private changeDistance(value: number): void {
     window.localStorage.setItem("distance", value.toString())
   }
 
