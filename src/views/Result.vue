@@ -38,6 +38,8 @@ section.section
     template(v-else-if="result === null && !geoError")
       .loading
         h2.title {{ searching }}
+        template(v-if="doneSearching && results.length === 0")
+          router-link.button.is-light.is-medium(to="/start") Start over!
     template(v-else-if="geoError")
       h2.title Oops...
       h2.subtitle It seems like we can't find your location, please enter your location manually.
