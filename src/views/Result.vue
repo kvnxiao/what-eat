@@ -2,7 +2,7 @@
 section.section
   .container
     h1.title.is-size-1 You should visit...
-    template(v-if="result !== null")
+    template(v-if="result !== null && !noMore")
       .columns
         .column
           img.place(:src="result.image_url")
@@ -46,6 +46,9 @@ section.section
           input.input.is-medium(type="text", v-model="address", placeholder="Your current location address")
         .control
           button.button.is-danger.is-medium(@click="manualAddress()") Search
+    template(v-else-if="noMore")
+      h2.title You've reached the end! No more results :(
+      router-link.button.is-light.is-medium(to="/start") Start over!
 </template>
 
 <script lang="ts">
@@ -111,6 +114,7 @@ export default class Result extends Vue {
   private result: FoodResult | null = null
 
   private geoError = false
+  private noMore = false
   private address = ""
 
   private mounted() {
@@ -152,6 +156,7 @@ export default class Result extends Vue {
       this.result = head
     } else {
       console.log("No more results!")
+      this.noMore = true
     }
   }
 
