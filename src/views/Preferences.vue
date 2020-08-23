@@ -4,11 +4,12 @@ section.section
     h1.title.is-size-1 My preferences
     h2.title Occasion
     .buttons
-      button.button(@click="setOccasion('date')", :class="{ active: isOccasion('date') }") Date night
-      button.button(@click="setOccasion('brunch')", :class="{ active: isOccasion('brunch') }") Brunch
-      button.button(@click="setOccasion('family')", :class="{ active: isOccasion('family') }") Family dining
-      button.button(@click="setOccasion('quick')", :class="{ active: isOccasion('quick') }") Quick meal
-      button.button(@click="setOccasion('special')", :class="{ active: isOccasion('special') }") Special occasion
+      button.button(@click="setOccasion('Date Night')", :class="{ active: isOccasion('Date Night') }") Date night
+      button.button(@click="setOccasion('Brunch')", :class="{ active: isOccasion('Brunch') }") Brunch
+      button.button(@click="setOccasion('Family Restaurant')", :class="{ active: isOccasion('Family Restaurant') }") Family dining
+      button.button(@click="setOccasion('Special Occasion Restaurant')", :class="{ active: isOccasion('Special Occasion Restaurant') }") Special occasion
+      button.button(@click="setOccasion('Quick Bites')", :class="{ active: isOccasion('Quick Bites') }") Quick meal
+      button.button(@click="setOccasion('food')", :class="{ active: isOccasion('food') }") Any occasion
     h2.title Price
     .field.has-addons.price
       p.control
@@ -38,7 +39,7 @@ import { Component, Vue } from "vue-property-decorator"
 })
 export default class Preferences extends Vue {
   private prices: Set<number> = new Set([1, 2])
-  private occasion = "quick"
+  private occasion = "Quick Bites"
 
   private marks = {
     "0": "",
@@ -50,7 +51,7 @@ export default class Preferences extends Vue {
   private distance = 2.5
 
   private mounted(): void {
-    this.occasion = window.localStorage.getItem("occasion") ?? "quick"
+    this.occasion = window.localStorage.getItem("occasion") ?? "Quick Bites"
     this.prices = new Set(JSON.parse(window.localStorage.getItem("price") ?? "[1, 2]"))
     this.distance = parseFloat(window.localStorage.getItem("distance") ?? "2.5")
   }

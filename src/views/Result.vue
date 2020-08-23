@@ -124,14 +124,14 @@ export default class Result extends Vue {
       success => {
         this.coordinates = success.coords
 
-        axios.get(this.makeURL()).then(s => {
-          const results = s.data as YelpResult
+        axios.get(this.makeURL()).then(res => {
+          const results = res.data as YelpResult
           this.results = results.businesses
           shuffle(this.results)
           this.setRandomResult()
         })
       },
-      err => {
+      () => {
         this.geoError = true
       },
     )
@@ -168,19 +168,23 @@ export default class Result extends Vue {
   }
 
   private makeURL(): string {
-    return `https://harryhuang.api.stdlib.com/what-eat@dev/search/?term=food&categories=${this.getCategories()}&latitude=${
-      this.coordinates.latitude
-    }&longitude=${this.coordinates.longitude}&radius=${this.getRadius()}&price=${this.getPrice()}`
+    return `https://harryhuang.api.stdlib.com/what-eat@dev/search/?term=${
+      this.occasion
+    }&categories=${this.getCategories()}&latitude=${this.coordinates.latitude}&longitude=${
+      this.coordinates.longitude
+    }&radius=${this.getRadius()}&price=${this.getPrice()}`
   }
 
   private manualAddress() {
     const address = this.address
-    const url = `https://harryhuang.api.stdlib.com/what-eat@dev/search/?term=food&categories=${this.getCategories()}&location=${encodeURIComponent(
+    const url = `https://harryhuang.api.stdlib.com/what-eat@dev/search/?term=${
+      this.occasion
+    }&categories=${this.getCategories()}&location=${encodeURIComponent(
       address,
     )}&radius=${this.getRadius()}&price=${this.getPrice()}`
 
-    axios.get(url).then(s => {
-      const results = s.data as YelpResult
+    axios.get(url).then(res => {
+      const results = res.data as YelpResult
       this.results = results.businesses
       shuffle(this.results)
       this.setRandomResult()
