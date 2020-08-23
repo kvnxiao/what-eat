@@ -18,6 +18,9 @@ export default class Home extends Vue {}
 </script>
 
 <style lang="sass" scoped>
+.hero.is-primary
+  min-height: calc(100vh - 52px)
+
 img.logo
   border-radius: 50%
   margin-bottom: 2rem

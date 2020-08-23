@@ -1,30 +1,12 @@
 <template lang="pug">
 #app
+  .container
+    nav.navbar
+      .navbar-brand
+        router-link.navbar-item(to="/")
+          img.logo(src="/logo.png")
+          span.title.is-size-4 What Eat
   router-view
-  //- section.hero.is-primary.is-fullheight
-  //-   .hero-body
-  //-     .container
-  //-       .header
-  //-         h1.title.is-size-1 What Eat
-  //-         h2.subtitle.is-size-3.is-italic Your #1 restaurant aggregator
-  //-       .go
-  //-         button.button.is-danger.is-large Get Started
-  //- .search-bar
-  //-   .field.has-addons
-  //-     .control.has-icons-left.search
-  //-       input.input.is-medium.is-rounded(type="text", placeholder="I'm feeling...")
-  //-       span.icon.is-left
-  //-         fa(icon="utensils")
-  //-     .control.location
-  //-       button.button.is-medium
-  //-         span.icon
-  //-           fa(icon="sliders-h")
-  //-         span Location
-  //-     .control
-  //-       button.button.is-medium.is-rounded.is-danger
-  //-         span.icon
-  //-           fa(icon="search")
-  //-         span Search
 </template>
 
 <style lang="sass">
@@ -44,6 +26,14 @@ $themeColor: #ff7c03
   -moz-osx-font-smoothing: grayscale
   text-align: center
   color: #2c3e50
+
+img.logo
+  border-radius: 50%
+  margin-right: 0.5rem
+
+nav.navbar
+  .title
+    color: #ff7c03
 
 // #nav
 //   padding: 30px
