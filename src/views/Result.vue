@@ -211,6 +211,10 @@ export default class Result extends Vue {
 </script>
 
 <style lang="sass" scoped>
+@import "~bulma/sass/utilities/initial-variables.sass"
+@import "~bulma/sass/utilities/derived-variables.scss"
+@import "~bulma/sass/utilities/mixins.sass"
+
 .buttons
   justify-content: center
 
@@ -225,8 +229,8 @@ p.subtitle.name, .bottom p.subtitle
 
 img.place
   object-fit: cover
-  width: 500px
-  height: 500px
+  width: 300px
+  height: 240px
 
 hr
   background-color: #ff7c03
@@ -245,4 +249,14 @@ h1.title, .price, .rating
   justify-content: center
   input.input
     width: 24rem
+
+.distance
+  margin-top: 0.5rem
+
+@include desktop
+  h1.title
+    margin-bottom: 4rem
+  img.place
+    width: 500px
+    height: 500px
 </style>

@@ -2,14 +2,15 @@
 section.section
   .container
     h1.title.is-size-1 My preferences
-    h2.title Occasion
-    .buttons
-      button.button(@click="setOccasion('Date Night')", :class="{ active: isOccasion('Date Night') }") Date night
-      button.button(@click="setOccasion('Brunch')", :class="{ active: isOccasion('Brunch') }") Brunch
-      button.button(@click="setOccasion('Family Restaurant')", :class="{ active: isOccasion('Family Restaurant') }") Family dining
-      button.button(@click="setOccasion('Special Occasion Restaurant')", :class="{ active: isOccasion('Special Occasion Restaurant') }") Special occasion
-      button.button(@click="setOccasion('Quick Bites')", :class="{ active: isOccasion('Quick Bites') }") Quick meal
-      button.button(@click="setOccasion('food')", :class="{ active: isOccasion('food') }") Any occasion
+    .occasion
+      h2.title Occasion
+      .buttons.occasions
+        button.button(@click="setOccasion('Date Night')", :class="{ active: isOccasion('Date Night') }") Date night
+        button.button(@click="setOccasion('Brunch')", :class="{ active: isOccasion('Brunch') }") Brunch
+        button.button(@click="setOccasion('Family Restaurant')", :class="{ active: isOccasion('Family Restaurant') }") Family dining
+        button.button(@click="setOccasion('Special Occasion Restaurant')", :class="{ active: isOccasion('Special Occasion Restaurant') }") Special occasion
+        button.button(@click="setOccasion('Quick Bites')", :class="{ active: isOccasion('Quick Bites') }") Quick meal
+        button.button(@click="setOccasion('food')", :class="{ active: isOccasion('food') }") Any occasion
     h2.title Price
     .field.has-addons.price
       p.control
@@ -86,6 +87,13 @@ export default class Preferences extends Vue {
 </script>
 
 <style lang="sass" scoped>
+@import "~bulma/sass/utilities/initial-variables.sass"
+@import "~bulma/sass/utilities/derived-variables.scss"
+@import "~bulma/sass/utilities/mixins.sass"
+
+.occasions
+  margin-bottom: 0.75rem
+
 .buttons
   justify-content: center
 
@@ -107,4 +115,11 @@ h1.title
   max-width: 24rem
   margin: 0 auto 4rem auto
   padding: 0 2rem
+
+@include desktop
+  h1.title
+    margin-bottom: 3rem
+
+  .occasions, .price, .slider
+    margin-bottom: 3rem
 </style>
