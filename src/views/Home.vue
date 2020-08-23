@@ -4,7 +4,7 @@ section.hero.is-primary.is-fullheight
     .container
       .header
         h1.title.is-size-1 What Eat
-        h2.subtitle.is-size-3.is-italic Your #1 restaurant aggregator
+        h2.subtitle.is-size-3.is-italic Your #1 decision maker
       .go
         router-link.button.is-danger.is-large(to="/start") Get Started
 </template>
